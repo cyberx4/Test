@@ -155,6 +155,25 @@ namespace Stock
         private bool Validation()
         {
             bool result = false;
+            if (string.IsNullOrEmpty(textBox1.Text))
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(textBox1, "Product Code Required");
+            }
+            else if (string.IsNullOrEmpty(textBox2.Text))
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(textBox2, "Product Name Required");
+            }
+            else if (comboBox1.SelectedIndex == -1)
+            {
+                errorProvider1.Clear();
+                errorProvider1.SetError(comboBox1, "Select Status");
+            }
+            else
+            {
+                result = true;
+            }
             if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && comboBox1.SelectedIndex > -1)
             {
                 result = true;
