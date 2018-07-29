@@ -114,7 +114,7 @@ namespace Stock
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (Validation())
+            if (!Validation())
             {
                 SqlConnection con = Connection.getConnection();
                 var sqlQuery = "";
@@ -130,12 +130,13 @@ namespace Stock
                 {
                     MessageBox.Show("Record Not Exists...!");
                 }
-
+                //Reading Data
                 LoadData();
-            }
-            //Reading Data
-            
                 ResetRecords();
+            }
+            
+            
+               
             
         }
         private void ResetRecords()
@@ -154,7 +155,7 @@ namespace Stock
         private bool Validation()
         {
             bool result = false;
-            if (!string.IsNullOrEmpty(textBox1.Text) && string.IsNullOrEmpty(textBox2.Text) && comboBox1.SelectedIndex > -1)
+            if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && comboBox1.SelectedIndex > -1)
             {
                 result = true;
             }
