@@ -27,35 +27,38 @@ namespace Stock
         private void button2_Click(object sender, EventArgs e)
         {
             //TO-DO: CheckLogin username & Password
-            
-                SqlConnection con = Connection.getConnection();
-                //Insert Logic
-                con.Open();
-                bool status = false;
-                if (comboBox1.SelectedIndex == 0)
-                {
-                    status = true;
-                }
-                else
-                {
-                    status = false;
-                }
-                var sqlQuery = "";
-                if (IfProductsExists(con, textBox1.Text))
-                {
-                    sqlQuery = @"UPDATE[Products] SET [ProductName] = '" + textBox2.Text + "' ,[ProductStatus] = '" + status + "' WHERE [ProductCode] = '" + textBox1.Text + "'";
-                }
-                else
-                {
-                    sqlQuery = @"INSERT INTO[dbo].[Products]([ProductCode],[ProductName],[ProductStatus])VALUES('" + textBox1.Text + "','" + textBox2.Text + "','" + status + "')";
-                }
+            if (Validation())
+            { 
+            SqlConnection con = Connection.getConnection();
+            //Insert Logic
+            con.Open();
+            bool status = false;
+            if (comboBox1.SelectedIndex == 0)
+            {
+                status = true;
+            }
+            else
+            {
+                status = false;
+            }
+            var sqlQuery = "";
+            if (IfProductsExists(con, textBox1.Text))
+            {
+                sqlQuery = @"UPDATE[Products] SET [ProductName] = '" + textBox2.Text + "' ,[ProductStatus] = '" + status + "' WHERE [ProductCode] = '" + textBox1.Text + "'";
+            }
+            else
+            {
+                sqlQuery = @"INSERT INTO[dbo].[Products]([ProductCode],[ProductName],[ProductStatus])VALUES('" + textBox1.Text + "','" + textBox2.Text + "','" + status + "')";
+            }
 
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                cmd.ExecuteNonQuery();
-                con.Close();
-                //Reading Data
-                LoadData();
+            SqlCommand cmd = new SqlCommand(sqlQuery, con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            //Reading Data
+            LoadData();
                 ResetRecords();
+            }
+                
             
             
         }
@@ -114,28 +117,31 @@ namespace Stock
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!Validation())
+            DialogResult dialogResult = MessageBox.Show("Are you sure want to delete", "Message", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
-                SqlConnection con = Connection.getConnection();
-                var sqlQuery = "";
-                if (IfProductsExists(con, textBox1.Text))
+                if (Validation())
                 {
-                    con.Open();
-                    sqlQuery = @"DELETE FROM[Products] WHERE [ProductCode] = '" + textBox1.Text + "'";
-                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                    cmd.ExecuteNonQuery();
-                    con.Close();
+                    SqlConnection con = Connection.getConnection();
+                    var sqlQuery = "";
+                    if (IfProductsExists(con, textBox1.Text))
+                    {
+                        con.Open();
+                        sqlQuery = @"DELETE FROM[Products] WHERE [ProductCode] = '" + textBox1.Text + "'";
+                        SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Record Not Exists...!");
+                    }
+                    //Reading Data
+                    LoadData();
+                    ResetRecords();
                 }
-                else
-                {
-                    MessageBox.Show("Record Not Exists...!");
-                }
-                //Reading Data
-                LoadData();
-                ResetRecords();
+
             }
-            
-            
                
             
         }
@@ -171,10 +177,6 @@ namespace Stock
                 errorProvider1.SetError(comboBox1, "Select Status");
             }
             else
-            {
-                result = true;
-            }
-            if (!string.IsNullOrEmpty(textBox1.Text) && !string.IsNullOrEmpty(textBox2.Text) && comboBox1.SelectedIndex > -1)
             {
                 result = true;
             }
