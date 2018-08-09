@@ -22,6 +22,7 @@ namespace Stock
         {
             this.ActiveControl = dateTimePicker1;
             comboBox1.SelectedIndex = 0;
+            LoadData();
         }
 
         private void dateTimePicker1_KeyDown(object sender, KeyEventArgs e)
@@ -38,7 +39,21 @@ namespace Stock
             {
                 if (textBox1.Text.Length > 0)
                 {
-                    textBox2.Focus();
+                    SqlConnection con = Connection.getConnection();
+                    con.Open();
+                    SqlDataAdapter sda = new SqlDataAdapter("select ProductName From [Products] WHERE [ProductCode] ='" + textBox1.Text + "'", con);
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    if(dt.Rows.Count > 0)
+                    {
+                        textBox2.Text = dt.Rows[0][0].ToString();
+                        textBox3.Focus();
+                    }
+                    else
+                    {
+                        textBox2.Text = "";
+                    }
+                    
                 }
                 else
                 {
@@ -118,7 +133,7 @@ namespace Stock
             textBox2.Clear();
             textBox3.Clear();
             comboBox1.SelectedIndex = -1;
-            button2.Text = "Add";
+            button2.Text = "Delete";
             dateTimePicker1.Focus();
         }
 
@@ -198,6 +213,93 @@ namespace Stock
                 con.Close();
                 MessageBox.Show("Restore Saved Successfully");
                 ResetRecord();
+                LoadData();
+            }
+        }
+        public void LoadData()
+        {
+            SqlConnection con = Connection.getConnection();
+            SqlDataAdapter sda = new SqlDataAdapter("Select * From [Stock]", con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            dataGridView1.Rows.Clear();
+            foreach(DataRow item in dt.Rows)
+            {
+                int n = dataGridView1.Rows.Add();
+                dataGridView1.Rows[n].Cells["dgSno"].Value = n + 1;
+                dataGridView1.Rows[n].Cells["dgProCode"].Value = item["ProductCode"].ToString();
+                dataGridView1.Rows[n].Cells["dgProName"].Value = item["ProductName"].ToString();
+                dataGridView1.Rows[n].Cells["dgQuantity"].Value = float.Parse(item["Quantity"].ToString());
+                dataGridView1.Rows[n].Cells["dgDate"].Value = Convert.ToDateTime(item["TransDate"].ToString()).ToString("dd/MM/yyyy");
+                if ((bool)item["ProductStatus"])
+                {
+                    dataGridView1.Rows[n].Cells["dgStatus"].Value = "Active";
+                }
+                else
+                {
+                    dataGridView1.Rows[n].Cells["dgStatus"].Value = "Deactive";
+                }
+            }
+
+            if(dataGridView1.Rows.Count > 0)
+            {
+                label7.Text = dataGridView1.Rows.Count.ToString();
+                float totQty = 0;
+                for(int i=0; i < dataGridView1.Rows.Count; ++i)
+                {
+                    totQty += float.Parse(dataGridView1.Rows[i].Cells["dgQuantity"].Value.ToString());
+                    label9.Text = totQty.ToString();
+                }
+            }
+            else
+            {
+                label7.Text = "0";
+                label9.Text = "0";
+            }
+        }
+
+        private void dataGridView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            button1.Text = "Update";
+            textBox1.Text = dataGridView1.SelectedRows[0].Cells["dgProCode"].Value.ToString();
+            textBox2.Text = dataGridView1.SelectedRows[0].Cells["dgProName"].Value.ToString();
+            textBox3.Text = dataGridView1.SelectedRows[0].Cells["dgQuantity"].Value.ToString();
+            dateTimePicker1.Text = DateTime.Parse(dataGridView1.SelectedRows[0].Cells["dgDate"].Value.ToString()).ToString("dd/MM/yyyy");
+            if(dataGridView1.SelectedRows[0].Cells["dgStatus"].Value.ToString() == "Active")
+            {
+                comboBox1.SelectedIndex = 0;
+            }
+            else
+            {
+                comboBox1.SelectedIndex = 1;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Are you sure want to Delete", "Message", MessageBoxButtons.YesNo);
+            if(dialogResult == DialogResult.Yes)
+            {
+                if (Validation())
+                {
+                    SqlConnection con = Connection.getConnection();
+                    var sqlQuery = "";
+                    if (ifProductsExists(con, textBox1.Text))
+                    {
+                        con.Open();
+                        sqlQuery = @"DELETE FROM [Stock] WHERE [ProductCode] = '" + textBox1.Text + "'";
+                        SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        MessageBox.Show("Record deleted successfully...!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Record Not Exists...!");
+                    }
+                    LoadData();
+                    ResetRecord();
+                }
             }
         }
     }
