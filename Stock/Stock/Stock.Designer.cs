@@ -42,20 +42,22 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.dgSno = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgProCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgProName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // dateTimePicker1
@@ -74,6 +76,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 1;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             this.textBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
@@ -181,12 +184,46 @@
             this.dgQuantity,
             this.dgDate,
             this.dgStatus});
-            this.dataGridView1.Location = new System.Drawing.Point(28, 148);
+            this.dataGridView1.Location = new System.Drawing.Point(28, 167);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(684, 228);
             this.dataGridView1.TabIndex = 13;
             this.dataGridView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDoubleClick);
+            // 
+            // dgSno
+            // 
+            this.dgSno.HeaderText = "S.No";
+            this.dgSno.Name = "dgSno";
+            // 
+            // dgProCode
+            // 
+            this.dgProCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgProCode.HeaderText = "Product Code";
+            this.dgProCode.Name = "dgProCode";
+            // 
+            // dgProName
+            // 
+            this.dgProName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgProName.HeaderText = "Product Name";
+            this.dgProName.Name = "dgProName";
+            // 
+            // dgQuantity
+            // 
+            this.dgQuantity.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgQuantity.HeaderText = "Quantity";
+            this.dgQuantity.Name = "dgQuantity";
+            // 
+            // dgDate
+            // 
+            this.dgDate.HeaderText = "Date";
+            this.dgDate.Name = "dgDate";
+            // 
+            // dgStatus
+            // 
+            this.dgStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dgStatus.HeaderText = "Status";
+            this.dgStatus.Name = "dgStatus";
             // 
             // comboBox1
             // 
@@ -241,45 +278,24 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
-            // dgSno
+            // dataGridView2
             // 
-            this.dgSno.HeaderText = "S.No";
-            this.dgSno.Name = "dgSno";
-            // 
-            // dgProCode
-            // 
-            this.dgProCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgProCode.HeaderText = "Product Code";
-            this.dgProCode.Name = "dgProCode";
-            // 
-            // dgProName
-            // 
-            this.dgProName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgProName.HeaderText = "Product Name";
-            this.dgProName.Name = "dgProName";
-            // 
-            // dgQuantity
-            // 
-            this.dgQuantity.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgQuantity.HeaderText = "Quantity";
-            this.dgQuantity.Name = "dgQuantity";
-            // 
-            // dgDate
-            // 
-            this.dgDate.HeaderText = "Date";
-            this.dgDate.Name = "dgDate";
-            // 
-            // dgStatus
-            // 
-            this.dgStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dgStatus.HeaderText = "Status";
-            this.dgStatus.Name = "dgStatus";
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(658, 12);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.ReadOnly = true;
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView2.TabIndex = 19;
             // 
             // Stock
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 452);
+            this.ClientSize = new System.Drawing.Size(970, 440);
+            this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
@@ -303,6 +319,7 @@
             this.Load += new System.EventHandler(this.Stock_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,5 +352,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgQuantity;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgStatus;
+        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }

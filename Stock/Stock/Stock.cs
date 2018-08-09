@@ -39,12 +39,19 @@ namespace Stock
             {
                 if (textBox1.Text.Length > 0)
                 {
-                    SqlConnection con = Connection.getConnection();
+                    textBox1.Text = dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+                    textBox2.Text = dataGridView2.SelectedRows[0].Cells[1].Value.ToString();
+                    textBox3.Focus();
+
+
+
+
+                   /* SqlConnection con = Connection.getConnection();
                     con.Open();
                     SqlDataAdapter sda = new SqlDataAdapter("select ProductName From [Products] WHERE [ProductCode] ='" + textBox1.Text + "'", con);
                     DataTable dt = new DataTable();
                     sda.Fill(dt);
-                    if(dt.Rows.Count > 0)
+                    if(dt.Rows.Count > 0) //count
                     {
                         textBox2.Text = dt.Rows[0][0].ToString();
                         textBox3.Focus();
@@ -53,12 +60,12 @@ namespace Stock
                     {
                         textBox2.Text = "";
                     }
-                    
+                    */
                 }
-                else
+                /*else
                 {
                     textBox1.Focus();
-                }
+                } */
                 
             }
         }
@@ -302,5 +309,26 @@ namespace Stock
                 }
             }
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            SqlConnection con = Connection.getConnection();
+            con.Open();
+            SqlDataAdapter sda = new SqlDataAdapter("Select ProductCode, ProductName From [Products] WHERE [ProductCode] Like '" + textBox1.Text + "%'", con);
+            DataTable dt = new DataTable();
+            sda.Fill(dt);
+            dataGridView2.DataSource = dt;
+        }
     }
+    private DataGridView dgview;
+    private DataGridViewTextBoxColumn dgviewcol1;
+    private DataGridViewTextBoxColumn dgviewcol2;
+
+    void Search()
+    {
+        dgview = new DataGridView();
+        dgviewcol1 = new DataGridViewTextBoxColumn();
+
+    }
+
 }
